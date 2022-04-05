@@ -1,14 +1,31 @@
 {
-  "scripts": {
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.17.8",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
-    "@types/jest": "^27.4.1",
-    "babel-jest": "^27.5.1",
-    "jest": "^27.5.1",
-    "ts-jest": "^27.1.4"
-  }
+    "name": "small-vue",
+    "description": "\"# small-vue\"",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/1gao-176/small-vue.git"
+    },
+    "keywords": [
+        "vue"
+    ],
+    "author": "gao-176",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/1gao-176/small-vue/issues"
+    },
+    "homepage": "https://github.com/1gao-176/small-vue#readme",
+    "scripts": {
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.17.8",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/preset-typescript": "^7.16.7",
+        "@types/jest": "^27.4.1",
+        "babel-jest": "^27.5.1",
+        "jest": "^27.5.1",
+        "ts-jest": "^27.1.4"
+    }
 }
