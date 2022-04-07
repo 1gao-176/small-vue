@@ -19,4 +19,15 @@ describe("effect", () => {
     console.log(nextAge);
     expect(nextAge).toBe(12);
   });
+  it('should return runner when called effect', () => {
+    let age = 10;
+    let runner = effect(() => {
+      age++
+      return 'age'
+    })
+    expect(age).toBe(11)
+    let r = runner()
+    expect(age).toBe(12)
+    expect(r).toBe('age')
+  })
 });
