@@ -1,16 +1,35 @@
+import { extend } from './../shared/index';
 class ReactiveEffect {
+  public scheduler: any//添加一个scheduler属性
+  public deps = []
   private _fn: any;
-  public scheduler
+  private active = true
+  private onStop?: () => void
   constructor(fn, scheduler?) {
+    //将传入的scheduler存储起来
+    this.scheduler = scheduler
     this._fn = fn;
     this.scheduler = scheduler
   }
   run() {
-    activeEffect = this;
+    activeEffect = this;//用于存储依赖
     return this._fn();
   }
+  stop() {
+    if (this.active) {
+      cleanUpEffect(this);
+      if (this.onStop) {
+        this.onStop()
+      }
+    }
+    this.active = false
+  }
 }
-
+function cleanUpEffect(effect: any) {
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect);
+  });
+}
 const targetMap = new Map();
 export function track(target, key) {
   // target -> key -> dep
@@ -25,8 +44,9 @@ export function track(target, key) {
     dep = new Set();
     depsMap.set(key, dep);
   }
-
+  if (!activeEffect) return
   dep.add(activeEffect);
+  activeEffect.deps.push(dep)
 }
 
 export function trigger(target, key) {
@@ -37,7 +57,6 @@ export function trigger(target, key) {
     if (effect.scheduler) {
       effect.scheduler()
     } else {
-
       effect.run();
     }
   }
@@ -45,9 +64,15 @@ export function trigger(target, key) {
 
 let activeEffect;
 export function effect(fn, options: any = {}) {
-  // fn
   const _effect = new ReactiveEffect(fn, options.scheduler);
-
+  extend(_effect, options)
   _effect.run();
-  return _effect.run.bind(_effect);
+  let runner: any = _effect.run.bind(_effect)
+  //将effect挂载到runner上，以便在stop函数中使用
+  runner._effect = _effect
+  return runner
+}
+
+export const stop = (runner: any) => {
+  runner._effect.stop()
 }
